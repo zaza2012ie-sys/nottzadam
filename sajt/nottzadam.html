@@ -1,0 +1,1024 @@
+
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NottzAdam | Football & Streetwear</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+        body {
+            background-color: #ffffff;
+            color: #111111;
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 25px;
+            border-bottom: 1px solid #eaeaea;
+            background: #fff;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .menu-toggle {
+            background: none;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            padding: 5px;
+        }
+        .menu-toggle span {
+            display: block;
+            width: 22px;
+            height: 2px;
+            background: #111;
+        }
+        .logo {
+            font-weight: 900;
+            font-size: 1.4rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-decoration: none;
+            color: #000;
+            cursor: pointer;
+        }
+        .sign-in-box, .cart-nav-btn {
+            background: transparent;
+            border: 1px solid #111;
+            padding: 6px 14px;
+            border-radius: 4px;
+            text-decoration: none;
+            color: #111;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .sign-in-box:hover, .cart-nav-btn:hover {
+            background: #111;
+            color: #fff;
+        }
+        .dropdown-menu {
+            position: absolute;
+            top: 65px;
+            left: 20px;
+            background: #fff;
+            border: 1px solid #eaeaea;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            display: none;
+            flex-direction: column;
+            width: 200px;
+            z-index: 200;
+            border-radius: 4px;
+        }
+        .dropdown-menu.active {
+            display: flex;
+        }
+        .dropdown-menu a {
+            padding: 12px 20px;
+            text-decoration: none;
+            color: #111;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            font-weight: 600;
+            border-bottom: 1px solid #f2f2f2;
+            cursor: pointer;
+        }
+        .dropdown-menu a:hover {
+            background: #f8f8f8;
+        }
+
+        /* VERTIKALNA KORPA */
+        .cart-drawer {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 380px;
+            height: 100%;
+            background: #fff;
+            box-shadow: -5px 0 25px rgba(0,0,0,0.15);
+            z-index: 300;
+            transition: right 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            padding: 25px;
+        }
+        .cart-drawer.active {
+            right: 0;
+        }
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #eaeaea;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+        .cart-header h3 {
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .close-cart {
+            background: none;
+            border: none;
+            font-size: 1.4rem;
+            cursor: pointer;
+        }
+        .cart-items {
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .cart-item {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            border-bottom: 1px solid #f2f2f2;
+            padding-bottom: 12px;
+        }
+        .cart-item img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 4px;
+            background: #f7f7f7;
+        }
+        .cart-item-details {
+            flex: 1;
+        }
+        .cart-item-title {
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+        .cart-item-price {
+            font-size: 0.85rem;
+            color: #555;
+        }
+        .remove-item {
+            background: none;
+            border: none;
+            color: #888;
+            cursor: pointer;
+            font-size: 0.8rem;
+            text-decoration: underline;
+        }
+        .remove-item:hover {
+            color: #ff0000;
+        }
+        .cart-footer {
+            border-top: 1px solid #eaeaea;
+            padding-top: 15px;
+            margin-top: 15px;
+        }
+        .cart-total {
+            display: flex;
+            justify-content: space-between;
+            font-weight: bold;
+            font-size: 1rem;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+        .checkout-btn {
+            width: 100%;
+            background: #111;
+            color: #fff;
+            border: none;
+            padding: 14px;
+            text-transform: uppercase;
+            font-weight: bold;
+            letter-spacing: 1px;
+            border-radius: 4px;
+            cursor: pointer;
+            text-align: center;
+            display: block;
+            text-decoration: none;
+            margin-bottom: 10px;
+        }
+        .checkout-btn:hover {
+            background: #333;
+        }
+        .empty-cart-msg {
+            color: #777;
+            font-size: 0.9rem;
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .view {
+            display: none;
+        }
+        .view.active {
+            display: block;
+        }
+
+        /* POČETNA HERO SEKCIJA SA RONALDINHO SLIKOM */
+        .hero {
+            position: relative;
+            height: 85vh;
+            background-image: url('ronaldinho.jpg');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: flex-start;
+            justify-content: flex-start;
+            padding: 50px 0 0 50px;
+        }
+        .hero::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.45);
+        }
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: left;
+            color: #ffffff;
+            max-width: 750px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 25px;
+        }
+        .hero-title {
+            font-size: 4.2rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            line-height: 1.1;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.9);
+        }
+        .hero-subtitle {
+            font-family: "Times New Roman", Times, Georgia, serif;
+            font-size: 1.9rem;
+            font-weight: bold;
+            font-style: italic;
+            color: #f8f8f8;
+            max-width: 680px;
+            line-height: 1.4;
+            text-shadow: 0 2px 15px rgba(0,0,0,0.9);
+            letter-spacing: 0.5px;
+        }
+
+        .shop-now-container {
+            position: absolute;
+            bottom: 12%;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+        }
+        .shop-now-btn {
+            background: #ffffff;
+            color: #000000;
+            padding: 22px 70px;
+            text-decoration: none;
+            font-weight: 900;
+            font-size: 1.4rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: inline-block;
+        }
+        .shop-now-btn:hover {
+            background: #ffffff;
+            transform: translateX(calc(-50% + 25px)) scale(1.06);
+            box-shadow: -15px 18px 35px rgba(0,0,0,0.6);
+        }
+
+        .catalog-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        .section-title {
+            text-align: center;
+            font-size: 1.5rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 40px;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        .product-card {
+            cursor: pointer;
+            text-align: left;
+        }
+        .product-card img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            object-position: center;
+            background: #f7f7f7;
+            margin-bottom: 12px;
+            border-radius: 6px;
+            transition: transform 0.3s ease;
+        }
+        .product-card:hover img {
+            transform: scale(1.02);
+        }
+        .product-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+        }
+        .price-wrap {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            font-size: 0.95rem;
+            margin-bottom: 8px;
+        }
+        .old-price {
+            text-decoration: line-through;
+            color: #888;
+        }
+        .new-price {
+            font-weight: bold;
+            color: #111;
+        }
+
+        /* DETALJI PROIZVODA */
+        .detail-container {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 50px;
+            align-items: start;
+        }
+        .detail-images-desktop {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        .detail-images-desktop img {
+            width: 100%;
+            height: 420px;
+            object-fit: cover;
+            object-position: center;
+            border-radius: 6px;
+            background: #f7f7f7;
+        }
+        .detail-slider-mobile {
+            display: none;
+            position: relative;
+            width: 100%;
+            height: 420px;
+            background: #f7f7f7;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        .detail-slider-mobile img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+        }
+        .slider-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.6);
+            color: #fff;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+        }
+        .slider-prev { left: 10px; }
+        .slider-next { right: 10px; }
+        .slider-dots {
+            position: absolute;
+            bottom: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 6px;
+        }
+        .slider-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+        }
+        .slider-dot.active { background: #fff; }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            text-decoration: none;
+            color: #666;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+        }
+        .detail-title {
+            font-size: 1.5rem;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+            line-height: 1.3;
+        }
+        .detail-prices {
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+        .save-badge {
+            display: inline-block;
+            background: #27ae60;
+            color: white;
+            font-size: 0.75rem;
+            padding: 3px 8px;
+            border-radius: 3px;
+            margin-left: 10px;
+            vertical-align: middle;
+        }
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+        .cart-btn-dark, .buy-now-bordered {
+            flex: 1;
+            background: transparent;
+            color: #111;
+            border: 2px solid #111;
+            text-align: center;
+            padding: 16px;
+            text-decoration: none;
+            text-transform: uppercase;
+            font-weight: bold;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .buy-now-bordered {
+            background: #ffffff;
+        }
+        .buy-now-bordered:hover {
+            background: #111;
+            color: #fff;
+        }
+        .features {
+            margin-top: 30px;
+            font-size: 0.9rem;
+            color: #444;
+            line-height: 1.6;
+            border-top: 1px solid #eaeaea;
+            padding-top: 20px;
+        }
+
+        /* ABOUT ME SEKCIJA */
+        .about-section {
+            max-width: 1000px;
+            margin: 80px auto 100px auto;
+            padding: 60px 40px;
+            background: #fafafa;
+            border-radius: 12px;
+            border: 1px solid #eaeaea;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 50px;
+        }
+        .about-text-content { flex: 1; }
+        .about-section h2 {
+            font-size: 2.2rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            color: #111;
+        }
+        .about-section p {
+            font-size: 1.15rem;
+            line-height: 1.8;
+            color: #444;
+            margin-bottom: 30px;
+        }
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+        .social-links a {
+            background: #111;
+            color: #fff;
+            padding: 12px 25px;
+            text-decoration: none;
+            border-radius: 6px;
+            text-transform: uppercase;
+            font-weight: bold;
+            letter-spacing: 1px;
+            font-size: 0.85rem;
+        }
+        .about-image-container img {
+            width: 220px;
+            height: 220px;
+            border-radius: 50%;
+            object-fit: cover;
+            object-position: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+            border: 4px solid #fff;
+        }
+
+        .auth-container {
+            max-width: 400px;
+            margin: 80px auto;
+            padding: 40px;
+            border: 1px solid #eaeaea;
+            border-radius: 6px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        .auth-container h2 {
+            text-transform: uppercase;
+            font-size: 1.3rem;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+        .auth-input {
+            width: 100%;
+            padding: 12px 15px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .auth-submit {
+            width: 100%;
+            background: #111;
+            color: #fff;
+            border: none;
+            padding: 14px;
+            text-transform: uppercase;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        @media(max-width: 768px) {
+            .hero {
+                padding: 30px 15px 0 15px;
+                justify-content: center;
+                text-align: center;
+                height: 80vh;
+            }
+            .hero-content {
+                text-align: center;
+                align-items: center;
+            }
+            .hero-title {
+                font-size: 2.6rem;
+            }
+            .hero-subtitle {
+                font-size: 1.35rem;
+            }
+            .shop-now-container { bottom: 12%; }
+            .shop-now-btn {
+                padding: 16px 45px;
+                font-size: 1.1rem;
+            }
+            .about-section {
+                flex-direction: column-reverse;
+                text-align: center;
+                padding: 40px 20px;
+                margin: 40px 15px;
+            }
+            .social-links {
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            .about-image-container img {
+                width: 160px;
+                height: 160px;
+            }
+            .detail-container {
+                grid-template-columns: 1fr;
+                gap: 25px;
+                margin: 20px auto;
+            }
+            .detail-images-desktop { display: none; }
+            .detail-slider-mobile { display: block; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-left">
+            <button class="menu-toggle" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <a class="logo" onclick="showView('home')">NottzAdam</a>
+        </div>
+        <div class="header-right">
+            <a class="sign-in-box" onclick="showView('signin')">Sign In</a>
+            <button class="cart-nav-btn" onclick="toggleCart()">Cart (<span id="cart-count">0</span>)</button>
+        </div>
+
+        <div id="dropdownMenu" class="dropdown-menu">
+            <a onclick="showView('home'); toggleMenu();">Home</a>
+            <a onclick="showView('signin'); toggleMenu();">Sign In</a>
+            <a onclick="showView('catalog'); toggleMenu();">Football Kits</a>
+            <a onclick="scrollToAbout(); toggleMenu();">About Me</a>
+        </div>
+    </header>
+
+    <!-- VERTIKALNA KORPA -->
+    <div id="cartDrawer" class="cart-drawer">
+        <div class="cart-header">
+            <h3>Tvoja Korpa</h3>
+            <button class="close-cart" onclick="toggleCart()">&times;</button>
+        </div>
+        <div class="cart-items" id="cartItemsContainer">
+            <p class="empty-cart-msg">Korpa je prazna.</p>
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Ukupno:</span>
+                <span id="cartTotalPrice">0 RSD</span>
+            </div>
+            <button class="checkout-btn" onclick="showView('checkout-form'); toggleCart();">Završi porudžbinu</button>
+            <a href="https://instagram.com/nffc.adam" target="_blank" style="display:block; text-align:center; font-size:0.8rem; color:#555; text-decoration:underline; margin-top:5px;">Ili poruči preko Instagrama</a>
+        </div>
+    </div>
+
+    <!-- STRANICA ZA NARUČIVANJE (FORMSPREE POVEZANA NA GMAIL) -->
+    <div id="checkout-form" class="view">
+        <div style="max-width: 500px; margin: 50px auto; padding: 30px; border: 1px solid #eaeaea; border-radius: 8px; background: #fafafa;">
+            <a class="back-link" onclick="showView('home')">&larr; Nazad na početnu</a>
+            <h2 style="text-transform: uppercase; font-size: 1.4rem; margin-bottom: 20px; text-align: center;">Podaci za dostavu</h2>
+            
+            <form action="https://formspree.io/f/mwlpzake" method="POST">
+                <label style="display: block; margin-top: 10px; font-weight: 600; font-size: 0.9rem;">Ime i prezime:</label>
+                <input type="text" name="name" required style="width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
+                
+                <label style="display: block; margin-top: 15px; font-weight: 600; font-size: 0.9rem;">Email adresa:</label>
+                <input type="email" name="email" required style="width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
+
+                <label style="display: block; margin-top: 15px; font-weight: 600; font-size: 0.9rem;">Adresa i grad:</label>
+                <input type="text" name="address" required style="width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
+
+                <label style="display: block; margin-top: 15px; font-weight: 600; font-size: 0.9rem;">Izabrani dresovi i detalji:</label>
+                <textarea name="order_details" id="orderSummaryTextarea" required style="width: 100%; padding: 10px; margin-top: 5px; height: 100px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;"></textarea>
+
+                <button type="submit" style="width: 100%; background: #111; color: white; border: none; padding: 14px; margin-top: 20px; cursor: pointer; border-radius: 4px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;">Pošalji porudžbinu</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- 1. POČETNA STRANA -->
+    <div id="home" class="view active">
+        <div class="hero">
+            <div class="hero-content">
+                <h1 class="hero-title">Retki dresovi. Pravi fudbalski vajb.</h1>
+                <p class="hero-subtitle">NottzAdam je tvoja nova omiljena destinacija za najbolje fudbalske dresove sezone. Pronađi svoj omiljeni kit i istakni se.</p>
+            </div>
+            <div class="shop-now-container">
+                <a class="shop-now-btn" onclick="showView('catalog')">Shop Now</a>
+            </div>
+        </div>
+
+        <div class="about-section" id="aboutSection">
+            <div class="about-text-content">
+                <h2>About Me</h2>
+                <p>I am a football shirt collector who loves football and supports Nottingham Forest. Come on you REDS!</p>
+                <div class="social-links">
+                    <a href="https://instagram.com/nffc.adam" target="_blank">Instagram: @nffc.adam</a>
+                    <a href="https://tiktok.com/@nottzadam" target="_blank">TikTok: @nottzadam</a>
+                </div>
+            </div>
+            <div class="about-image-container">
+                <img src="IMG_0596.jpeg" alt="Adam">
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. FOOTBALL KITS / KATALOG -->
+    <div id="catalog" class="view">
+        <div class="catalog-container">
+            <h2 class="section-title">Dresovi na stanju</h2>
+            <div class="grid">
+                
+                <!-- Cole Palmer -->
+                <div class="product-card" onclick="showView('palmer')">
+                    <img src="IMG_1629 Medium.jpeg" alt="Cole Palmer">
+                    <div class="product-title">Chelsea home dres 2026/27 – Palmer #10</div>
+                    <div class="price-wrap">
+                        <span class="old-price">4.500,00 RSD</span>
+                        <span class="new-price">3.600,00 RSD</span>
+                    </div>
+                </div>
+
+                <!-- Doue -->
+                <div class="product-card" onclick="showView('doue')">
+                    <img src="IMG_1651 Medium.jpeg" alt="Doue Home Kit">
+                    <div class="product-title">Paris dres 2026/27 – Doue #14</div>
+                    <div class="price-wrap">
+                        <span class="old-price">4.500,00 RSD</span>
+                        <span class="new-price">3.600,00 RSD</span>
+                    </div>
+                </div>
+
+                <!-- Bellingham -->
+                <div class="product-card" onclick="showView('bellingham')">
+                    <img src="IMG_1641.jpeg" alt="Bellingham Home Kit">
+                    <div class="product-title">Real Madrid dres 2026/27 – Bellingham #5</div>
+                    <div class="price-wrap">
+                        <span class="old-price">4.500,00 RSD</span>
+                        <span class="new-price">3.600,00 RSD</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- STRANICA PROIZVODA: COLE PALMER -->
+    <div id="palmer" class="view">
+        <div class="detail-container">
+            <div>
+                <a class="back-link" onclick="showView('catalog')">&larr; Back to Kits</a>
+                <div class="detail-images-desktop">
+                    <img src="IMG_1629 Medium.jpeg" alt="Palmer Front">
+                    <img src="IMG_1627 Medium.jpeg" alt="Palmer Back">
+                </div>
+                <div class="detail-slider-mobile" id="slider-palmer">
+                    <img src="IMG_1629 Medium.jpeg" alt="Palmer Image" class="slider-img">
+                    <button class="slider-arrow slider-prev" onclick="changeSlide('palmer', -1)">&#10094;</button>
+                    <button class="slider-arrow slider-next" onclick="changeSlide('palmer', 1)">&#10095;</button>
+                    <div class="slider-dots">
+                        <span class="slider-dot active" data-index="0"></span>
+                        <span class="slider-dot" data-index="1"></span>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <h1 class="detail-title">Chelsea home dres 2026/27 – Palmer #10</h1>
+                <div class="detail-prices">
+                    <span class="new-price" style="font-size: 1.4rem;">3.600,00 RSD</span>
+                    <span class="old-price" style="font-size: 1rem;">4.500,00 RSD</span>
+                    <span class="save-badge">SAVE 900 RSD</span>
+                </div>
+                <p style="margin-bottom: 15px; font-size: 0.95rem;"><strong>Veličina:</strong> M</p>
+                <div class="btn-group">
+                    <button class="cart-btn-dark" onclick="addToCart('Chelsea home dres 2026/27 – Palmer #10', 3600, 'IMG_1629 Medium.jpeg')">Add to Cart</button>
+                    <button class="buy-now-bordered" onclick="addToCart('Chelsea home dres 2026/27 – Palmer #10', 3600, 'IMG_1629 Medium.jpeg'); showView('checkout-form');">Buy Now</button>
+                </div>
+                <div class="features">
+                    <p>• Vrhunski fan dres sa štampom Palmer #10.</p>
+                    <p>• Izuzetno udoban materijal, idealan za mečeve i svakodnevno nošenje.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- STRANICA PROIZVODA: DOUE -->
+    <div id="doue" class="view">
+        <div class="detail-container">
+            <div>
+                <a class="back-link" onclick="showView('catalog')">&larr; Back to Kits</a>
+                <div class="detail-images-desktop">
+                    <img src="IMG_1651 Medium.jpeg" alt="Doue Front">
+                    <img src="IMG_1653 Medium.jpeg" alt="Doue Back">
+                </div>
+                <div class="detail-slider-mobile" id="slider-doue">
+                    <img src="IMG_1651 Medium.jpeg" alt="Doue Image" class="slider-img">
+                    <button class="slider-arrow slider-prev" onclick="changeSlide('doue', -1)">&#10094;</button>
+                    <button class="slider-arrow slider-next" onclick="changeSlide('doue', 1)">&#10095;</button>
+                    <div class="slider-dots">
+                        <span class="slider-dot active" data-index="0"></span>
+                        <span class="slider-dot" data-index="1"></span>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <h1 class="detail-title">Paris dres 2026/27 – Doue #14</h1>
+                <div class="detail-prices">
+                    <span class="new-price" style="font-size: 1.4rem;">3.600,00 RSD</span>
+                    <span class="old-price" style="font-size: 1rem;">4.500,00 RSD</span>
+                    <span class="save-badge">SAVE 900 RSD</span>
+                </div>
+                <p style="margin-bottom: 15px; font-size: 0.95rem;"><strong>Veličina:</strong> S</p>
+                <div class="btn-group">
+                    <button class="cart-btn-dark" onclick="addToCart('Paris dres 2026/27 – Doue #14', 3600, 'IMG_1651 Medium.jpeg')">Add to Cart</button>
+                    <button class="buy-now-bordered" onclick="addToCart('Paris dres 2026/27 – Doue #14', 3600, 'IMG_1651 Medium.jpeg'); showView('checkout-form');">Buy Now</button>
+                </div>
+                <div class="features">
+                    <p>• Zvaničan dizajn domaće garniture sa imenom Doue #14.</p>
+                    <p>• Visokokvalitetna izrada i materijal koji diše.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- STRANICA PROIZVODA: BELLINGHAM -->
+    <div id="bellingham" class="view">
+        <div class="detail-container">
+            <div>
+                <a class="back-link" onclick="showView('catalog')">&larr; Back to Kits</a>
+                <div class="detail-images-desktop">
+                    <img src="IMG_1641.jpeg" alt="Bellingham Front">
+                    <img src="IMG_1643 Medium.jpeg" alt="Bellingham Back">
+                </div>
+                <div class="detail-slider-mobile" id="slider-bellingham">
+                    <img src="IMG_1641.jpeg" alt="Bellingham Image" class="slider-img">
+                    <button class="slider-arrow slider-prev" onclick="changeSlide('bellingham', -1)">&#10094;</button>
+                    <button class="slider-arrow slider-next" onclick="changeSlide('bellingham', 1)">&#10095;</button>
+                    <div class="slider-dots">
+                        <span class="slider-dot active" data-index="0"></span>
+                        <span class="slider-dot" data-index="1"></span>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <h1 class="detail-title">Real Madrid dres 2026/27 – Bellingham #5</h1>
+                <div class="detail-prices">
+                    <span class="new-price" style="font-size: 1.4rem;">3.600,00 RSD</span>
+                    <span class="old-price" style="font-size: 1rem;">4.500,00 RSD</span>
+                    <span class="save-badge">SAVE 900 RSD</span>
+                </div>
+                <p style="margin-bottom: 15px; font-size: 0.95rem;"><strong>Veličina:</strong> M</p>
+                <div class="btn-group">
+                    <button class="cart-btn-dark" onclick="addToCart('Real Madrid dres 2026/27 – Bellingham #5', 3600, 'IMG_1641.jpeg')">Add to Cart</button>
+                    <button class="buy-now-bordered" onclick="addToCart('Real Madrid dres 2026/27 – Bellingham #5', 3600, 'IMG_1641.jpeg'); showView('checkout-form');">Buy Now</button>
+                </div>
+                <div class="features">
+                    <p>• Specijalno izdanje Real Madrid dresa sa Bellingham #5.</p>
+                    <p>• Vrhunski detalji i autentičan izgled.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. SIGN IN STRANA -->
+    <div id="signin" class="view">
+        <div class="auth-container">
+            <h2>Sign In to NottzAdam</h2>
+            <form onsubmit="event.preventDefault(); alert('Uspesno ste se prijavili!'); showView('home');">
+                <input type="email" class="auth-input" placeholder="Email Address" required>
+                <input type="password" class="auth-input" placeholder="Password" required>
+                <button type="submit" class="auth-submit">Sign In</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let cart = [];
+
+        const productImages = {
+            'palmer': ['IMG_1629 Medium.jpeg', 'IMG_1627 Medium.jpeg'],
+            'doue': ['IMG_1651 Medium.jpeg', 'IMG_1653 Medium.jpeg'],
+            'bellingham': ['IMG_1641.jpeg', 'IMG_1643 Medium.jpeg']
+        };
+
+        let currentIndices = {
+            'palmer': 0,
+            'doue': 0,
+            'bellingham': 0
+        };
+
+        function changeSlide(productId, direction) {
+            let images = productImages[productId];
+            currentIndices[productId] += direction;
+            
+            if (currentIndices[productId] >= images.length) {
+                currentIndices[productId] = 0;
+            } else if (currentIndices[productId] < 0) {
+                currentIndices[productId] = images.length - 1;
+            }
+
+            let idx = currentIndices[productId];
+            let sliderEl = document.getElementById('slider-' + productId);
+            let imgEl = sliderEl.querySelector('.slider-img');
+            imgEl.src = images[idx];
+
+            let dots = sliderEl.querySelectorAll('.slider-dot');
+            dots.forEach((dot, i) => {
+                if (i === idx) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+        }
+
+        function showView(viewId) {
+            const views = document.querySelectorAll('.view');
+            views.forEach(v => v.classList.remove('active'));
+            document.getElementById(viewId).classList.add('active');
+            window.scrollTo(0, 0);
+        }
+
+        function toggleMenu() {
+            const menu = document.getElementById('dropdownMenu');
+            menu.classList.toggle('active');
+        }
+
+        function toggleCart() {
+            const drawer = document.getElementById('cartDrawer');
+            drawer.classList.toggle('active');
+        }
+
+        function scrollToAbout() {
+            showView('home');
+            setTimeout(() => {
+                document.getElementById('aboutSection').scrollIntoView({ behavior: 'smooth' });
+            }, 100);
+        }
+
+        function addToCart(title, price, image) {
+            cart.push({ title, price, image });
+            updateCartUI();
+            toggleCart();
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const container = document.getElementById('cartItemsContainer');
+            const countEl = document.getElementById('cart-count');
+            const totalEl = document.getElementById('cartTotalPrice');
+            const textareaEl = document.getElementById('orderSummaryTextarea');
+
+            countEl.innerText = cart.length;
+
+            if (cart.length === 0) {
+                container.innerHTML = '<p class="empty-cart-msg">Korpa je prazna.</p>';
+                totalEl.innerText = '0 RSD';
+                if (textareaEl) textareaEl.value = '';
+                return;
+            }
+
+            let html = '';
+            let total = 0;
+            let summaryText = '';
+
+            cart.forEach((item, index) => {
+                total += item.price;
+                summaryText += `- ${item.title} (${item.price} RSD)\n`;
+                html += `
+                    <div class="cart-item">
+                        <img src="${item.image}" alt="">
+                        <div class="cart-item-details">
+                            <div class="cart-item-title">${item.title}</div>
+                            <div class="cart-item-price">${item.price.toLocaleString()} RSD</div>
+                            <button class="remove-item" onclick="removeFromCart(${index})">Ukloni</button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+            totalEl.innerText = total.toLocaleString() + ' RSD';
+            if (textareaEl) {
+                textareaEl.value = "Poručeni dresovi:\n" + summaryText + "\nUkupno: " + total.toLocaleString() + " RSD";
+            }
+        }
+    </script>
+</body>
+</html>
